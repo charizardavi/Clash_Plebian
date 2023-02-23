@@ -1,10 +1,11 @@
 int tileSize = 100;
 void setup() {
-  size(displayWidth, displayHeight);
+  fullScreen();
   println(displayWidth);
   background(255);
 }
 void draw() {
+  size(displayWidth, displayHeight);
   strokeWeight(5);
   for (int y = 0; y <= 5; y++) {
     for (int x = 0; x < 10; x++) {
