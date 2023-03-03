@@ -32,6 +32,11 @@ boolean rgridSelect = false;
 boolean lcardSelect = true;
 boolean rcardSelect = true;
 
+boolean currentEnter = false;
+boolean currentShift = false;
+boolean enterIsReleased = true;
+boolean shiftIsReleased = true;
+
 void setup() {
   track = new SoundFile(this, "track.mp3");
   track.play();
@@ -46,12 +51,13 @@ void setup() {
   fullScreen();
   println(displayWidth);
   background(255);
+
   for (int i = 0; i<minionArray.length; i++) {
     mainGrid.gridArray[minionArray[i].xPos][minionArray[i].yPos] = new Block(mainGrid.knightImage, i, "knight");
   }
 
-
   grass = loadImage("grass.png");
+
   out1[0] = new card("goblin", 65);
   out1[1] = new card("knight", 65);
   out1[2] = new card("valkyrie", 65);
@@ -60,15 +66,19 @@ void setup() {
   deck1.add(new card("cannon", 65));
   deck1.add(new card("arrows", 65));
   deck1.add(new card("fireball", 65));
+
   out1[0].selected = true;
+
   out2[0] = new card("goblin", displayWidth-165);
   out2[1] = new card("knight", displayWidth-165);
   out2[2] = new card("valkyrie", displayWidth-165);
   out2[3] = new card("barbarian", displayWidth-165);
+
   deck2.add(new card("wizard", displayWidth-165));
   deck2.add(new card("cannon", displayWidth-165));
   deck2.add(new card("arrows", displayWidth-165));
   deck2.add(new card("fireball", displayWidth-165));
+
   out2[0].selected = true;
 }
 
@@ -76,6 +86,8 @@ void keyPressed() {
   if (key == 'b') {
     currentB = true;
   }
+  
+  print(keyCode); //enter: 10, shift: 16
 }
 
 
@@ -273,14 +285,17 @@ void cardSelect() {
         }
       }
     }
+
   }
 }
+
 void drawImage(PImage inputImage, int x, int y) {
   image(inputImage, (displayWidth-10*tileSize)/2+tileSize*x, 100+tileSize*y, tileSize, tileSize);
   noFill();
   stroke(0, 125, 0);
   rect((displayWidth-10*tileSize)/2+tileSize*x, 100+tileSize*y, tileSize, tileSize);
 }
+
 void selectBlockLeft() {
   if (lgridSelect) {
     if (!keyPressed) {
@@ -316,6 +331,7 @@ void selectBlockLeft() {
     rect((displayWidth-10*tileSize)/2, 100+tileSize*lheight, tileSize, tileSize);
   }
 }
+
 void selectBlockRight() {
   if (rgridSelect) {
     if (!keyPressed) {
