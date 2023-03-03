@@ -127,14 +127,14 @@ void draw() {
     background(255);
   }
 
-  if ((millis() - last) > 5000) {
-    elixirBar.increase(); 
-    elixirBar1.increase(); 
-    last = millis(); 
-  }
+  //if ((millis() - last) > 5000) {
+  //  elixirBar.increase(); 
+  //  elixirBar1.increase(); 
+  //  last = millis(); 
+  //}
   
-  elixirBar.draw();
-  elixirBar1.draw();
+  //elixirBar.draw();
+  //elixirBar1.draw();
 
   if (currentB == false) {
     bIsReleased = true;
@@ -259,7 +259,7 @@ void draw() {
     // selectBlockRight();
   }
   }
-}
+
 //scrolling up and down for either side
 void cardSelect() {
   if (!keyPressed) {
