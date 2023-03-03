@@ -98,43 +98,38 @@ void draw() {
     for (int x = 0; x < 10; x++) {
       drawImage(mainGrid.gridArray[x][y].image, x, y);
 
-      if (y == 2){
-        if (x > 0 && x < 9){
-          if(mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x+1][y].minion != null){
+      if (y == 2) {
+        if (x > 0 && x < 9) {
+          if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x+1][y].minion != null) {
             println("1");
             println(mainGrid.gridArray[x][y].minion.health);
             println(mainGrid.gridArray[x+1][y].minion.health);
-            while(mainGrid.gridArray[x][y].minion.health <= 0 || mainGrid.gridArray[x+1][y].minion.health <= 0){
+            while (mainGrid.gridArray[x][y].minion.health <= 0 || mainGrid.gridArray[x+1][y].minion.health <= 0) {
               print("fighting");
               mainGrid.gridArray[x+1][y].minion.health = mainGrid.gridArray[x+1][y].minion.health - mainGrid.gridArray[x][y].minion.attack;
               mainGrid.gridArray[x][y].minion.health = mainGrid.gridArray[x][y].minion.health - mainGrid.gridArray[x+1][y].minion.attack;
             }
-            if (mainGrid.gridArray[x+1][y].minion.health > mainGrid.gridArray[x][y].minion.health){
+            if (mainGrid.gridArray[x+1][y].minion.health > mainGrid.gridArray[x][y].minion.health) {
               mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
-            }
-            else if (mainGrid.gridArray[x+1][y].minion.health == mainGrid.gridArray[x][y].minion.health){
+            } else if (mainGrid.gridArray[x+1][y].minion.health == mainGrid.gridArray[x][y].minion.health) {
               mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
               mainGrid.gridArray[x+1][y] = new Block(mainGrid.grassImage, 0, "grass");
-            }
-            else{
+            } else {
               mainGrid.gridArray[x+1][y] = new Block(mainGrid.grassImage, 0, "grass");
             }
-          }
-          else if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x-1][y].minion != null){
+          } else if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x-1][y].minion != null) {
             print("-1");
-            if(mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x-1][y].minion != null){
-              while(mainGrid.gridArray[x][y].minion.health <= 0 || mainGrid.gridArray[x-1][y].minion.health <= 0){
+            if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x-1][y].minion != null) {
+              while (mainGrid.gridArray[x][y].minion.health <= 0 || mainGrid.gridArray[x-1][y].minion.health <= 0) {
                 mainGrid.gridArray[x-1][y].minion.health = mainGrid.gridArray[x-1][y].minion.health - mainGrid.gridArray[x][y].minion.attack;
                 mainGrid.gridArray[x][y].minion.health = mainGrid.gridArray[x][y].minion.health - mainGrid.gridArray[x-1][y].minion.attack;
               }
-              if (mainGrid.gridArray[x-1][y].minion.health > mainGrid.gridArray[x][y].minion.health){
+              if (mainGrid.gridArray[x-1][y].minion.health > mainGrid.gridArray[x][y].minion.health) {
                 mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
-              }
-              else if (mainGrid.gridArray[x-1][y].minion.health == mainGrid.gridArray[x][y].minion.health){
+              } else if (mainGrid.gridArray[x-1][y].minion.health == mainGrid.gridArray[x][y].minion.health) {
                 mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
                 mainGrid.gridArray[x-1][y] = new Block(mainGrid.grassImage, 0, "grass");
-              }
-              else{
+              } else {
                 mainGrid.gridArray[x-1][y] = new Block(mainGrid.grassImage, 0, "grass");
               }
             }
@@ -143,13 +138,13 @@ void draw() {
       }
     }
 
-  for (int i = 0; i < 4; i++) {
-    out1[i].show(i);
-    out2[i].show(i);
-  }
-  cardSelect();
-  selectBlockLeft();
-  selectBlockRight();
+    for (int i = 0; i < 4; i++) {
+      out1[i].show(i);
+      out2[i].show(i);
+    }
+    cardSelect();
+    selectBlockLeft();
+    selectBlockRight();
   }
 }
 //scrolling up and down for either side
@@ -350,8 +345,8 @@ void selectBlockRight() {
           rcardSelect = true;
         }
       }
-      stroke(255, 255, 0);
-      rect((displayWidth-10*tileSize)/2+tileSize*9, 100+tileSize*rheight, tileSize, tileSize);
     }
+    stroke(255, 255, 0);
+    rect((displayWidth-10*tileSize)/2+tileSize*9, 100+tileSize*rheight, tileSize, tileSize);
   }
 }
