@@ -3,7 +3,13 @@ class Block{
   public PImage image;
   Block(PImage inputImage, int inputId, String inputType){  
     image = inputImage;
-    if (!inputType.equals("grass")){
+    if (inputType == "tower1"){
+
+    }
+    else if (inputType == "tower2"){
+      
+    }
+    else if (!inputType.equals("grass")){
       minion = new Minion(inputType, inputId);
     }
   }

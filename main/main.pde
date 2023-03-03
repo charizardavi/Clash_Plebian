@@ -1,4 +1,6 @@
 import java.util.*;
+import processing.sound.*;
+SoundFile track;
 PImage grass;
 Grid mainGrid;
 Minion[] minionArray = new Minion[2];
@@ -31,6 +33,8 @@ boolean lcardSelect = true;
 boolean rcardSelect = true;
 
 void setup() {
+  track = new SoundFile(this, "track.mp3");
+  track.play();
   mainGrid = new Grid();
   minionArray[0] = new Minion("knight", 0);
   minionArray[1] = new Minion("goblin", 0);
