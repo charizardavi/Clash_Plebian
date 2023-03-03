@@ -119,12 +119,13 @@ void keyPressed() {
 void draw() {
   if (done == true){
     background(255);
-          textSize(128);
-          text("player 1 wins", 40, 120); 
-          fill(0, 408, 612);
+    textSize(128);
+    text("player 1 wins", 40, 120); 
+    fill(0, 408, 612);
   }
   else if (done == false){
-  background(255);
+    background(255);
+  }
 
   if ((millis() - last) > 5000) {
     elixirBar.increase(); 
