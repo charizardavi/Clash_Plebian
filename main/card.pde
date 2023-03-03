@@ -1,6 +1,6 @@
 PImage image;
 class card {
-  String type;
+  public String type;
   int order;
   int xpos;
   boolean selected;

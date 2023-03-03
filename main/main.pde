@@ -1,32 +1,45 @@
 import java.util.*;
 import processing.sound.*;
+
 SoundFile track;
+
 PImage grass;
+
 Grid mainGrid;
 Minion[] minionArray = new Minion[2];
+
 int tileSize = 100;
+
 int p1health = 1000;
 int p2health = 1000;
+
 int x = (displayWidth-10*tileSize)/2;
 int y = 100+tileSize;
+
 Queue<card> deck1 = new LinkedList<card>();
 card[] out1 = new card[4];
+
 Queue<card> deck2 = new LinkedList<card>();
 card[] out2 = new card[4];
+
 boolean downReleased = true;
 boolean upReleased = true;
 boolean wReleased = true;
 boolean sReleased = true;
 boolean dReleased = true;
+
 boolean leftReleased = true;
 int rectX, rectY;
 int rectColor = color(0);
 int rectHighlight = color(51);
+
 boolean firstFrames = true;
 boolean currentB = false;
 boolean bIsReleased = true;
+
 int rheight = 0;
 int lheight = 0;
+
 boolean lgridSelect = false;
 boolean rgridSelect = false;
 boolean lcardSelect = true;
@@ -36,6 +49,7 @@ boolean currentEnter = false;
 boolean currentShift = false;
 boolean enterIsReleased = true;
 boolean shiftIsReleased = true;
+
 
 void setup() {
   track = new SoundFile(this, "track.mp3");
@@ -62,6 +76,7 @@ void setup() {
   out1[1] = new card("knight", 65);
   out1[2] = new card("hog", 65);
   out1[3] = new card("valkyrie", 65);
+  
   deck1.add(new card("wizard", 65));
   deck1.add(new card("cannon", 65));
   deck1.add(new card("arrows", 65));
@@ -73,6 +88,7 @@ void setup() {
   out2[1] = new card("knight", displayWidth-165);
   out2[2] = new card("hog", displayWidth-165);
   out2[3] = new card("valkyrie", displayWidth-165);
+
   deck2.add(new card("wizard", displayWidth-165));
   deck2.add(new card("cannon", displayWidth-165));
   deck2.add(new card("arrows", displayWidth-165));
@@ -132,7 +148,8 @@ void draw() {
             } else {
               mainGrid.gridArray[x+1][y] = new Block(mainGrid.grassImage, 0, "grass");
             }
-          } else if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x-1][y].minion != null) {
+          } 
+          else if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x-1][y].minion != null) {
             print("-1");
             if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x-1][y].minion != null) {
               while (mainGrid.gridArray[x][y].minion.health <= 0 || mainGrid.gridArray[x-1][y].minion.health <= 0) {
@@ -155,7 +172,7 @@ void draw() {
     //out1[0].show(0);
     for (int i = 0; i < 4; i++) {
       out1[i].show(i);
-      out2[i].show(i);
+      // out2[i].show(i);
     }
     cardSelect();
     selectBlockLeft();
