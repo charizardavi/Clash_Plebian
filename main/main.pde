@@ -1,5 +1,7 @@
 import java.util.*;
 PImage grass;
+Grid mainGrid;
+Minion[] minionArray = new Minion[1];
 int tileSize = 100;
 int p1health = 1000;
 int p2health = 1000;
@@ -15,6 +17,14 @@ boolean wReleased = true;
 boolean sReleased = true;
 boolean dReleased = true;
 boolean leftReleased = true;
+int tileSize = 100;
+int rectX, rectY;
+int rectColor = color(0);
+int rectHighlight = color(51);
+boolean firstFrames = true;
+boolean currentB = false;
+boolean bIsReleased = true;
+
 
 void setup() {
   fullScreen();
