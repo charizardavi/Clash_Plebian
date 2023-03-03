@@ -23,7 +23,12 @@ int rectHighlight = color(51);
 boolean firstFrames = true;
 boolean currentB = false;
 boolean bIsReleased = true;
-
+int rheight = 0;
+int lheight = 0;
+boolean lgridSelect = false;
+boolean rgridSelect = false;
+boolean lcardSelect = true;
+boolean rcardSelect = true;
 
 void setup() {
   mainGrid = new Grid();
@@ -59,8 +64,8 @@ void setup() {
   out2[0].selected = true;
 }
 
-void keyPressed(){
-  if(key == 'b'){
+void keyPressed() {
+  if (key == 'b') {
     currentB = true;
   }
 }
@@ -92,7 +97,12 @@ void draw() {
     out1[i].show(i);
     out2[i].show(i);
   }
-  //scrolling up and down for either side
+  cardSelect();
+  selectBlockLeft();
+  selectBlockRight();
+}
+//scrolling up and down for either side
+void cardSelect() {
   if (!keyPressed) {
     currentB = false;
     downReleased = true;
@@ -102,107 +112,114 @@ void draw() {
     dReleased = true;
     leftReleased = true;
   }
-  if (key == 's' && sReleased) {
-    if (keyPressed) {
-      sReleased = false;
-      boolean nextSelect = false;
-      int order = 0;
-      for (int i = 0; i < 3; i++) {
-        if (out1[i].selected == true) {
-          nextSelect = true;
-          order = i;
-        }
-      }
-      if (nextSelect == true) {
-        out1[order+1].selected = true;
-        out1[order].selected = false;
-        nextSelect = false;
-      }
-    }
-  }
-  if (key == 'w' && wReleased) {
-    if (keyPressed) {
-      wReleased = false;
-      boolean prevSelect = false;
-      int order = 0;
-      for (int i = 1; i < 4; i++) {
-        if (out1[i].selected == true) {
-          prevSelect = true;
-          order = i;
-        }
-      }
-      if (prevSelect == true) {
-        out1[order-1].selected = true;
-        out1[order].selected = false;
-        prevSelect = false;
-      }
-    }
-  }
-  if (key == CODED) {
-    if (keyCode == DOWN && downReleased) {
+  if (lcardSelect) {
+    if (key == 's' && sReleased) {
       if (keyPressed) {
-        downReleased = false;
+        sReleased = false;
         boolean nextSelect = false;
         int order = 0;
         for (int i = 0; i < 3; i++) {
-          if (out2[i].selected == true) {
+          if (out1[i].selected == true) {
             nextSelect = true;
             order = i;
           }
         }
         if (nextSelect == true) {
-          out2[order+1].selected = true;
-          out2[order].selected = false;
+          out1[order+1].selected = true;
+          out1[order].selected = false;
           nextSelect = false;
         }
       }
     }
-    if (keyCode == UP && upReleased) {
+    if (key == 'w' && wReleased) {
       if (keyPressed) {
-        upReleased = false;
+        wReleased = false;
         boolean prevSelect = false;
         int order = 0;
         for (int i = 1; i < 4; i++) {
-          if (out2[i].selected == true) {
+          if (out1[i].selected == true) {
             prevSelect = true;
             order = i;
           }
         }
         if (prevSelect == true) {
-          out2[order-1].selected = true;
-          out2[order].selected = false;
+          out1[order-1].selected = true;
+          out1[order].selected = false;
           prevSelect = false;
         }
       }
     }
-  }
-  //for using the cards
-  if (key == CODED) {
-    if (keyCode == LEFT && leftReleased) {
+    if (key == 'd' && dReleased) {
       if (keyPressed) {
-        leftReleased = false;
+        dReleased = false;
         for (int i = 0; i < 4; i++) {
-          if (out2[i].selected == true) {
-            out2[i].used(); // make this place the card down
-            println(out2[i].type); //delete this if u want
-            deck2.add(out2[i]);
-            out2[i] = deck2.remove();
-            out2[i].selected = true;
+          if (out1[i].selected == true) {
+            out1[i].used(); // make this place the card down
+            println(out1[i].type); //delete this if u want
+            deck1.add(out1[i]);
+            out1[i] = deck1.remove();
+            out1[i].selected = true;
+            lgridSelect = true;
+            lcardSelect = false;
           }
         }
       }
     }
   }
-  if (key == 'd' && dReleased) {
-    if (keyPressed) {
-      dReleased = false;
-      for (int i = 0; i < 4; i++) {
-        if (out1[i].selected == true) {
-          out1[i].used(); // make this place the card down
-          println(out1[i].type); //delete this if u want
-          deck1.add(out1[i]);
-          out1[i] = deck1.remove();
-          out1[i].selected = true;
+  if (rcardSelect) {
+    if (key == CODED) {
+      if (keyCode == DOWN && downReleased) {
+        if (keyPressed) {
+          downReleased = false;
+          boolean nextSelect = false;
+          int order = 0;
+          for (int i = 0; i < 3; i++) {
+            if (out2[i].selected == true) {
+              nextSelect = true;
+              order = i;
+            }
+          }
+          if (nextSelect == true) {
+            out2[order+1].selected = true;
+            out2[order].selected = false;
+            nextSelect = false;
+          }
+        }
+      }
+      if (keyCode == UP && upReleased) {
+        if (keyPressed) {
+          upReleased = false;
+          boolean prevSelect = false;
+          int order = 0;
+          for (int i = 1; i < 4; i++) {
+            if (out2[i].selected == true) {
+              prevSelect = true;
+              order = i;
+            }
+          }
+          if (prevSelect == true) {
+            out2[order-1].selected = true;
+            out2[order].selected = false;
+            prevSelect = false;
+          }
+        }
+      }
+    }
+    if (key == CODED) {
+      if (keyCode == LEFT && leftReleased) {
+        if (keyPressed) {
+          leftReleased = false;
+          for (int i = 0; i < 4; i++) {
+            if (out2[i].selected == true) {
+              out2[i].used(); // make this place the card down
+              println(out2[i].type); //delete this if u want
+              deck2.add(out2[i]);
+              out2[i] = deck2.remove();
+              out2[i].selected = true;
+              rgridSelect = true;
+              rcardSelect = false;
+            }
+          }
         }
       }
     }
@@ -213,4 +230,78 @@ void drawImage(PImage inputImage, int x, int y) {
   noFill();
   stroke(0, 125, 0);
   rect((displayWidth-10*tileSize)/2+tileSize*x, 100+tileSize*y, tileSize, tileSize);
+}
+void selectBlockLeft() {
+  if (lgridSelect) {
+    if (!keyPressed) {
+      wReleased = true;
+      sReleased = true;
+      dReleased = true;
+    }
+    if (key == 's' && sReleased) {
+      if (keyPressed) {
+        sReleased = false;
+        if (lheight < 4 && lheight >= 0) {
+          lheight++;
+        }
+        println("hello");
+      }
+    }
+    if (key == 'w' && wReleased) {
+      if (keyPressed) {
+        wReleased = false;
+        if (lheight <= 4 && lheight > 0) {
+          lheight--;
+        }
+      }
+    }
+    if (key == 'd' && dReleased) {
+      if (keyPressed) {
+        dReleased = false;
+        //add spawn here!!!!!
+        lgridSelect = false;
+        lcardSelect = true;
+      }
+    }
+    stroke(255, 255, 0);
+    rect((displayWidth-10*tileSize)/2, 100+tileSize*lheight, tileSize, tileSize);
+  }
+}
+void selectBlockRight() {
+  if (rgridSelect) {
+    if (!keyPressed) {
+      upReleased = true;
+      downReleased = true;
+      leftReleased = true;
+    }
+    if (key == CODED) {
+      if (keyCode == DOWN && downReleased) {
+        if (keyPressed) {
+          downReleased = false;
+          if (lheight < 4 && lheight >= 0) {
+            lheight++;
+          }
+          println("hello");
+        }
+      }
+      if (keyCode == UP && upReleased) {
+        if (keyPressed) {
+          upReleased = false;
+          if (lheight <= 4 && lheight > 0) {
+            lheight--;
+          }
+        }
+      }
+      if (keyCode == LEFT && leftReleased) {
+        if (keyPressed) {
+          leftReleased = false;
+          //add spawn here!!!!
+          rgridSelect = false;
+          rcardSelect = true;
+        }
+      }
+      stroke(255, 255, 0);
+      rect((displayWidth-10*tileSize)/2+tileSize*9, 100+tileSize*lheight, tileSize, tileSize);
+    }
+  }
 }
