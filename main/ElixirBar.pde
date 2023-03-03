@@ -1,7 +1,17 @@
-  public ElixirBar(int x, int y) {
-    this.x = x; 
-    this.y = y; 
-  }
+  class ElixirBar {
+    int elixir = 10;
+    int maxElixir = 10;
+    int elixirWidth = 20;
+    int elixirHeight = 60;
+    int x;
+    int y;
+    //int flashDuration = 500;
+    //int flashStartTime = 0;
+    //boolean flashing = false;
+    public ElixirBar(int x, int y) {
+      this.x = x; 
+      this.y = y; 
+
   
   void increase() {
     if (elixir < maxElixir) {
