@@ -6,7 +6,7 @@ SoundFile track;
 PImage grass;
 
 Grid mainGrid;
-Minion[] minionArray = new Minion[2];
+Minion[] minionArray = new Minion[6];
 
 int tileSize = 100;
 
@@ -15,6 +15,8 @@ int p2health = 1000;
 
 int x = (displayWidth-10*tileSize)/2;
 int y = 100+tileSize;
+
+boolean done = false;
 
 Queue<card> deck1 = new LinkedList<card>();
 card[] out1 = new card[4];
@@ -55,8 +57,8 @@ void setup() {
   track = new SoundFile(this, "track.mp3");
   track.play();
   mainGrid = new Grid();
-  minionArray[0] = new Minion("knight", 0);
-  minionArray[1] = new Minion("goblin", 0);
+  minionArray[0] = new Minion("knight", 1);
+  minionArray[1] = new Minion("goblin", 2);
   minionArray[0].xPos=2;
   minionArray[0].yPos=2;
   minionArray[1].xPos = 5;
@@ -67,7 +69,12 @@ void setup() {
   background(255);
 
   for (int i = 0; i<minionArray.length; i++) {
-    mainGrid.gridArray[minionArray[i].xPos][minionArray[i].yPos] = new Block(mainGrid.knightImage, i, "knight");
+    if (minionArray[i] != null && i == 0){
+      mainGrid.gridArray[minionArray[i].xPos][minionArray[i].yPos] = new Block(mainGrid.knightImage, 1, "knight");
+    }
+    else if (minionArray[i] != null && i > 0){
+      mainGrid.gridArray[minionArray[i].xPos][minionArray[i].yPos] = new Block(loadImage("goblin_combined.png"), 2, "goblin");
+    }
   }
 
   grass = loadImage("grass.png");
@@ -78,9 +85,9 @@ void setup() {
   out1[3] = new card("valkyrie", 65);
   
   deck1.add(new card("wizard", 65));
-  deck1.add(new card("cannon", 65));
-  deck1.add(new card("arrows", 65));
-  deck1.add(new card("fireball", 65));
+  deck1.add(new card("fighter", 65));
+  deck1.add(new card("robot", 65));
+  deck1.add(new card("barbarian", 65));
 
   out1[0].selected = true;
 
@@ -90,9 +97,9 @@ void setup() {
   out2[3] = new card("valkyrie", displayWidth-165);
 
   deck2.add(new card("wizard", displayWidth-165));
-  deck2.add(new card("cannon", displayWidth-165));
-  deck2.add(new card("arrows", displayWidth-165));
-  deck2.add(new card("fireball", displayWidth-165));
+  deck2.add(new card("fighter", displayWidth-165));
+  deck2.add(new card("robot", displayWidth-165));
+  deck2.add(new card("barbarian", displayWidth-165));
 
   out2[0].selected = true;
 }
@@ -107,19 +114,48 @@ void keyPressed() {
 
 
 void draw() {
+  if (done == true){
+    background(255);
+          textSize(128);
+          text("player 1 wins", 40, 120); 
+          fill(0, 408, 612);
+  }
+  else if (done == false){
+  background(255);
   if (currentB == false) {
     bIsReleased = true;
   }
 
-  if (currentB && bIsReleased && minionArray[0].xPos < 9) {
+  if (currentB && bIsReleased) {
     bIsReleased = false;
-    minionArray[0].xPos = minionArray[0].xPos + 1;
-    minionArray[1].xPos = minionArray[1].xPos - 1;
-    mainGrid.gridArray[minionArray[0].xPos-1][minionArray[0].yPos] = new Block(mainGrid.grassImage, 3, "grass");
-    mainGrid.gridArray[minionArray[0].xPos][minionArray[0].yPos] = new Block(mainGrid.knightImage, 3, "knight");
-
-    mainGrid.gridArray[minionArray[1].xPos+1][minionArray[0].yPos] = new Block(mainGrid.grassImage, 3, "grass");
-    mainGrid.gridArray[minionArray[1].xPos][minionArray[0].yPos] = new Block(mainGrid.knightImage, 3, "goblin");
+    for (int i = 0; i < minionArray.length; i++){
+      if (minionArray[i] != null && minionArray[i].xPos >= 0 && minionArray[i].xPos <= 9){
+         print("pos:");
+         print(minionArray[i].xPos);
+         print(minionArray[i].type);
+         print("posed");
+        if (minionArray[i].xPos == 8 && minionArray[i].type == "knight"){
+          done = true;
+          
+        }
+        print("id: ");
+        print(minionArray[i].id);
+        print(minionArray[i].type);
+        print("end");
+        if (minionArray[i].type == "knight"){
+          minionArray[i].xPos = minionArray[i].xPos + 1;
+          mainGrid.gridArray[minionArray[i].xPos-1][minionArray[i].yPos] = new Block(mainGrid.grassImage, 1, "grass");
+          mainGrid.gridArray[minionArray[i].xPos][minionArray[i].yPos] = new Block(minionArray[i].minionImage, minionArray[i].id, minionArray[i].type);
+        }
+        else if ( minionArray[i].type == "goblin"){
+          minionArray[i].xPos = minionArray[i].xPos - 1;
+          mainGrid.gridArray[minionArray[i].xPos+1][minionArray[i].yPos] = new Block(mainGrid.grassImage, 2, "grass");
+          mainGrid.gridArray[minionArray[i].xPos][minionArray[i].yPos] = new Block(minionArray[i].minionImage, minionArray[i].id, minionArray[i].type);
+        }
+      }
+    }
+    
+  
   }
 
   size(displayWidth, displayHeight);
@@ -131,6 +167,7 @@ void draw() {
 
       if (y == 2) {
         if (x > 0 && x < 9) {
+          
           if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x+1][y].minion != null) {
             println("1");
             println(mainGrid.gridArray[x][y].minion.health);
@@ -142,14 +179,29 @@ void draw() {
             }
             if (mainGrid.gridArray[x+1][y].minion.health > mainGrid.gridArray[x][y].minion.health) {
               mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
+              for (int i = 0; i < minionArray.length; i++){
+                if (minionArray[i] != null){
+                  if (minionArray[i].xPos == x){
+                    minionArray[i] = null;
+                  }
+                }
+              }
             } else if (mainGrid.gridArray[x+1][y].minion.health == mainGrid.gridArray[x][y].minion.health) {
               mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
               mainGrid.gridArray[x+1][y] = new Block(mainGrid.grassImage, 0, "grass");
             } else {
               mainGrid.gridArray[x+1][y] = new Block(mainGrid.grassImage, 0, "grass");
+              for (int i = 0; i < minionArray.length; i++){
+                if (minionArray[i] != null){
+                  if (minionArray[i].xPos == x+1){
+                    minionArray[i] = null;
+                  }
+                }
+              }
             }
           } 
           else if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x-1][y].minion != null) {
+            
             print("-1");
             if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x-1][y].minion != null) {
               while (mainGrid.gridArray[x][y].minion.health <= 0 || mainGrid.gridArray[x-1][y].minion.health <= 0) {
@@ -158,11 +210,25 @@ void draw() {
               }
               if (mainGrid.gridArray[x-1][y].minion.health > mainGrid.gridArray[x][y].minion.health) {
                 mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
+                for (int i = 0; i < minionArray.length; i++){
+                if (minionArray[i] != null){
+                  if (minionArray[i].xPos == x){
+                    minionArray[i] = null;
+                  }
+                }
+              }
               } else if (mainGrid.gridArray[x-1][y].minion.health == mainGrid.gridArray[x][y].minion.health) {
                 mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
                 mainGrid.gridArray[x-1][y] = new Block(mainGrid.grassImage, 0, "grass");
               } else {
                 mainGrid.gridArray[x-1][y] = new Block(mainGrid.grassImage, 0, "grass");
+                for (int i = 0; i < minionArray.length; i++){
+                if (minionArray[i] != null){
+                  if (minionArray[i].xPos == x-1){
+                    minionArray[i] = null;
+                  }
+                }
+              }
               }
             }
           }
@@ -172,11 +238,12 @@ void draw() {
     //out1[0].show(0);
     for (int i = 0; i < 4; i++) {
       out1[i].show(i);
-      // out2[i].show(i);
+      out2[i].show(i);
     }
     cardSelect();
-    selectBlockLeft();
-    selectBlockRight();
+    // selectBlockLeft();
+    // selectBlockRight();
+  }
   }
 }
 //scrolling up and down for either side
@@ -237,8 +304,15 @@ void cardSelect() {
             deck1.add(out1[i]);
             out1[i] = deck1.remove();
             out1[i].selected = true;
-            lgridSelect = true;
-            lcardSelect = false;
+            lcardSelect = true;
+            mainGrid.gridArray[0][2] = new Block(grass, 2, "knight");
+            int k = 0;
+            while (minionArray[k] != null){
+              k = k+1;
+            }
+            minionArray[k] = mainGrid.gridArray[0][2].minion;
+            minionArray[k].xPos = 0;
+            minionArray[k].yPos = 2;
           }
         }
       }
@@ -284,7 +358,7 @@ void cardSelect() {
       }
     }
     if (key == CODED) {
-      if (keyCode == LEFT && leftReleased) {
+      if (keyCode == LEFT && leftReleased && mainGrid.gridArray[9][2].minion == null) {
         if (keyPressed) {
           leftReleased = false;
           for (int i = 0; i < 4; i++) {
@@ -294,8 +368,15 @@ void cardSelect() {
               deck2.add(out2[i]);
               out2[i] = deck2.remove();
               out2[i].selected = true;
-              rgridSelect = true;
-              rcardSelect = false;
+              rcardSelect = true;
+              mainGrid.gridArray[9][2] = new Block(grass, 1, "goblin");
+              int k = 0;
+              while (minionArray[k] != null){
+                k = k+1;
+              }
+              minionArray[k] = mainGrid.gridArray[9][2].minion;
+              minionArray[k].xPos = 9;
+              minionArray[k].yPos = 2;
             }
           }
         }

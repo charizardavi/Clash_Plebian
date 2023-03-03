@@ -11,6 +11,7 @@ class Block{
     }
     else if (!inputType.equals("grass")){
       minion = new Minion(inputType, inputId);
+      image = minion.minionImage;
     }
   }
 }

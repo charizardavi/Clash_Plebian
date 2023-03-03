@@ -5,9 +5,11 @@ class Minion{
   public int id = 0;
   public int elixerCost;
   public int xPos = 0;
-  public int yPos = 0;  
+  public int yPos = 0;
+  public PImage minionImage = null;
   
   Minion(String inputType, int inputId){
+    minionImage = loadImage(inputType+"_combined.png");
     if (inputType.equals("knight")){
       health = 10;
       attack = 3;
