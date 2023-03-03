@@ -1,4 +1,4 @@
-PImage goblin;
+PImage image;
 class card {
   String type;
   int order;
@@ -10,7 +10,13 @@ class card {
     selected = false;
     xpos = x;
     if (s == "goblin"){
-      goblin = loadImage("pixel_"+s+".png");
+      image = loadImage("pixel_"+s+".png");
+    }
+    if (s == "knight"){
+      image = loadImage("pixel_"+s+".png");
+    }
+    if (s == "hog"){
+      image = loadImage("pixel_"+s+".png");
     }
   }
   void show(int i) {
@@ -20,7 +26,7 @@ class card {
       stroke(0);
     }
     if (type.equals("goblin")) {
-      image(goblin, xpos, 100+175*i, 100, 150);
+      image(image, xpos, 100+175*i, 100, 150);
     }
     rect(xpos, 100+175*i, 100, 150); //eventually replace this with images depending on the type
   }

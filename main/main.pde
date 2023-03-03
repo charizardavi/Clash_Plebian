@@ -51,7 +51,7 @@ void setup() {
   out1[0] = new card("goblin", 65);
   out1[1] = new card("knight", 65);
   out1[2] = new card("valkyrie", 65);
-  out1[3] = new card("barbarian", 65);
+  out1[3] = new card("hog", 65);
   deck1.add(new card("wizard", 65));
   deck1.add(new card("cannon", 65));
   deck1.add(new card("arrows", 65));
@@ -60,7 +60,7 @@ void setup() {
   out2[0] = new card("goblin", displayWidth-165);
   out2[1] = new card("knight", displayWidth-165);
   out2[2] = new card("valkyrie", displayWidth-165);
-  out2[3] = new card("barbarian", displayWidth-165);
+  out2[3] = new card("hog", displayWidth-165);
   deck2.add(new card("wizard", displayWidth-165));
   deck2.add(new card("cannon", displayWidth-165));
   deck2.add(new card("arrows", displayWidth-165));
