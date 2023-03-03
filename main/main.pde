@@ -74,6 +74,7 @@ void draw() {
   if (currentB && bIsReleased && minionArray[0].xPos < 9) {
     bIsReleased = false;
     minionArray[0].xPos = minionArray[0].xPos + 1;
+    mainGrid.gridArray[minionArray[0].xPos-1][minionArray[0].yPos] = new Block(mainGrid.grassImage, 3, "grass");
     mainGrid.gridArray[minionArray[0].xPos][minionArray[0].yPos] = new Block(mainGrid.knightImage, 3, "knight");
     print("hi");
   }
