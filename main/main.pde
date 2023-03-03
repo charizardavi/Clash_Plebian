@@ -328,8 +328,8 @@ void selectBlockRight() {
       if (keyCode == DOWN && downReleased) {
         if (keyPressed) {
           downReleased = false;
-          if (lheight < 4 && lheight >= 0) {
-            lheight++;
+          if (rheight < 4 && rheight >= 0) {
+            rheight++;
           }
           println("hello");
         }
@@ -337,8 +337,8 @@ void selectBlockRight() {
       if (keyCode == UP && upReleased) {
         if (keyPressed) {
           upReleased = false;
-          if (lheight <= 4 && lheight > 0) {
-            lheight--;
+          if (rheight <= 4 && rheight > 0) {
+            rheight--;
           }
         }
       }
@@ -351,7 +351,7 @@ void selectBlockRight() {
         }
       }
       stroke(255, 255, 0);
-      rect((displayWidth-10*tileSize)/2+tileSize*9, 100+tileSize*lheight, tileSize, tileSize);
+      rect((displayWidth-10*tileSize)/2+tileSize*9, 100+tileSize*rheight, tileSize, tileSize);
     }
   }
 }
