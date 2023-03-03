@@ -19,24 +19,41 @@ void setup() {
   fullScreen();
   println(displayWidth);
   background(255);
-  for (int i = 0; i<minionArray.length; i++){
+  for (int i = 0; i<minionArray.length; i++) {
 
     mainGrid.gridArray[minionArray[i].xPos][minionArray[i].yPos] = new Block(mainGrid.knightImage, 3, "knight");
   }
 }
-
-void draw() {
-  currentB = (key=='b' || key == 'B');
-
-  if (currentB && bIsReleased){
-    minionArray[0].xPos = minionArray[0].xPos + 1;
-    mainGrid.gridArray[minionArray[i].xPos][minionArray[i].yPos] = new Block(mainGrid.knightImage, 3, "knight");
+void keyPressed(){
+  if(key == 'b'){
+    currentB = true;
   }
+  else{
+    currentB = false;
+  }
+}
+void draw() {
+
+  if (key != 'b'){
+    currentB = false;
+  }
+  print(currentB);
+  if (currentB == false) {
+    bIsReleased = true;
+  }
+  if (currentB && bIsReleased && minionArray[0].xPos < 9) {
+    bIsReleased = false;
+    minionArray[0].xPos = minionArray[0].xPos + 1;
+    mainGrid.gridArray[minionArray[0].xPos][minionArray[0].yPos] = new Block(mainGrid.knightImage, 3, "knight");
+    print("hi");
+  }
+
+
 
   size(displayWidth, displayHeight);
   strokeWeight(5);
-  
-  
+
+
 
 
   for (int y = 0; y < 5; y++) {
