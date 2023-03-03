@@ -1,7 +1,7 @@
 import java.util.*;
 PImage grass;
 Grid mainGrid;
-Minion[] minionArray = new Minion[1];
+Minion[] minionArray = new Minion[2];
 int tileSize = 100;
 int p1health = 1000;
 int p2health = 1000;
@@ -27,15 +27,18 @@ boolean bIsReleased = true;
 
 void setup() {
   mainGrid = new Grid();
-  minionArray[0] = new Minion("goblin", 0);
+  minionArray[0] = new Minion("knight", 0);
+  minionArray[1] = new Minion("knight", 0);
   minionArray[0].xPos=2;
   minionArray[0].yPos=2;
+  minionArray[1].xPos = 5;
+  minionArray[1].yPos = 2;
+
   fullScreen();
   println(displayWidth);
   background(255);
   for (int i = 0; i<minionArray.length; i++) {
-
-    mainGrid.gridArray[minionArray[i].xPos][minionArray[i].yPos] = new Block(mainGrid.knightImage, 3, "knight");
+    mainGrid.gridArray[minionArray[i].xPos][minionArray[i].yPos] = new Block(mainGrid.knightImage, i, "knight");
   }
 
   grass = loadImage("grass.png");
@@ -74,9 +77,12 @@ void draw() {
   if (currentB && bIsReleased && minionArray[0].xPos < 9) {
     bIsReleased = false;
     minionArray[0].xPos = minionArray[0].xPos + 1;
+    minionArray[1].xPos = minionArray[1].xPos - 1;
     mainGrid.gridArray[minionArray[0].xPos-1][minionArray[0].yPos] = new Block(mainGrid.grassImage, 3, "grass");
     mainGrid.gridArray[minionArray[0].xPos][minionArray[0].yPos] = new Block(mainGrid.knightImage, 3, "knight");
-    print("hi");
+
+    mainGrid.gridArray[minionArray[1].xPos+1][minionArray[0].yPos] = new Block(mainGrid.grassImage, 3, "grass");
+    mainGrid.gridArray[minionArray[1].xPos][minionArray[0].yPos] = new Block(mainGrid.knightImage, 3, "knight");
   }
 
   size(displayWidth, displayHeight);
@@ -85,6 +91,17 @@ void draw() {
   for (int y = 0; y < 5; y++) {
     for (int x = 0; x < 10; x++) {
       drawImage(mainGrid.gridArray[x][y].image, x, y);
+
+      if (y == 2){
+        if (x > 0 && x < 9){
+          if(mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x+1][y].minion != null){
+            //if (mainGrid.gridArray[x][y].minion.health)
+          }
+          else if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x-1][y].minion != null){
+
+          }
+        }
+      }
     }
   }
 

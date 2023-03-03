@@ -9,7 +9,9 @@ class card {
     type = s;
     selected = false;
     xpos = x;
-    goblin = loadImage("pixel_goblin.png");
+    if (s == "goblin"){
+      goblin = loadImage("pixel_"+s+".png");
+    }
   }
   void show(int i) {
     if (selected) {

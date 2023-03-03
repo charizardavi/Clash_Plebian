@@ -1,5 +1,5 @@
 class Block{
-  public Minion minion;
+  public Minion minion = null;
   public PImage image;
   Block(PImage inputImage, int inputId, String inputType){  
     image = inputImage;
