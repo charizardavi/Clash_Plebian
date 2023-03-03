@@ -244,7 +244,6 @@ void selectBlockLeft() {
         if (lheight < 4 && lheight >= 0) {
           lheight++;
         }
-        println("hello");
       }
     }
     if (key == 'w' && wReleased) {
