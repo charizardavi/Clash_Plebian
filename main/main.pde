@@ -67,7 +67,6 @@ void keyPressed(){
 
 
 void draw() {
-  print(currentB);
   if (currentB == false) {
     bIsReleased = true;
   }
