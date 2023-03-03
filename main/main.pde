@@ -36,6 +36,9 @@ int rectHighlight = color(51);
 boolean firstFrames = true;
 boolean currentB = false;
 boolean bIsReleased = true;
+ElixirBar elixirBar; 
+ElixirBar elixirBar1;
+int last = millis(); 
 
 int rheight = 0;
 int lheight = 0;
@@ -107,6 +110,14 @@ void keyPressed() {
 
 
 void draw() {
+  if ((millis() - last) > 5000) {
+    elixirBar.increase(); 
+    elixirBar1.increase(); 
+    last = millis(); 
+  }
+  
+  elixirBar.draw();
+  elixirBar1.draw();
   if (currentB == false) {
     bIsReleased = true;
   }
