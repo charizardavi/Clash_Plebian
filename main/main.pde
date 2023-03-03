@@ -33,7 +33,7 @@ boolean rcardSelect = true;
 void setup() {
   mainGrid = new Grid();
   minionArray[0] = new Minion("knight", 0);
-  minionArray[1] = new Minion("knight", 0);
+  minionArray[1] = new Minion("goblin", 0);
   minionArray[0].xPos=2;
   minionArray[0].yPos=2;
   minionArray[1].xPos = 5;
@@ -45,6 +45,7 @@ void setup() {
   for (int i = 0; i<minionArray.length; i++) {
     mainGrid.gridArray[minionArray[i].xPos][minionArray[i].yPos] = new Block(mainGrid.knightImage, i, "knight");
   }
+
 
   grass = loadImage("grass.png");
   out1[0] = new card("goblin", 65);
@@ -87,7 +88,7 @@ void draw() {
     mainGrid.gridArray[minionArray[0].xPos][minionArray[0].yPos] = new Block(mainGrid.knightImage, 3, "knight");
 
     mainGrid.gridArray[minionArray[1].xPos+1][minionArray[0].yPos] = new Block(mainGrid.grassImage, 3, "grass");
-    mainGrid.gridArray[minionArray[1].xPos][minionArray[0].yPos] = new Block(mainGrid.knightImage, 3, "knight");
+    mainGrid.gridArray[minionArray[1].xPos][minionArray[0].yPos] = new Block(mainGrid.knightImage, 3, "goblin");
   }
 
   size(displayWidth, displayHeight);
@@ -100,15 +101,47 @@ void draw() {
       if (y == 2){
         if (x > 0 && x < 9){
           if(mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x+1][y].minion != null){
-            //if (mainGrid.gridArray[x][y].minion.health)
+            println("1");
+            println(mainGrid.gridArray[x][y].minion.health);
+            println(mainGrid.gridArray[x+1][y].minion.health);
+            while(mainGrid.gridArray[x][y].minion.health <= 0 || mainGrid.gridArray[x+1][y].minion.health <= 0){
+              print("fighting");
+              mainGrid.gridArray[x+1][y].minion.health = mainGrid.gridArray[x+1][y].minion.health - mainGrid.gridArray[x][y].minion.attack;
+              mainGrid.gridArray[x][y].minion.health = mainGrid.gridArray[x][y].minion.health - mainGrid.gridArray[x+1][y].minion.attack;
+            }
+            if (mainGrid.gridArray[x+1][y].minion.health > mainGrid.gridArray[x][y].minion.health){
+              mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
+            }
+            else if (mainGrid.gridArray[x+1][y].minion.health == mainGrid.gridArray[x][y].minion.health){
+              mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
+              mainGrid.gridArray[x+1][y] = new Block(mainGrid.grassImage, 0, "grass");
+            }
+            else{
+              mainGrid.gridArray[x+1][y] = new Block(mainGrid.grassImage, 0, "grass");
+            }
           }
           else if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x-1][y].minion != null){
-
+            print("-1");
+            if(mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x-1][y].minion != null){
+              while(mainGrid.gridArray[x][y].minion.health <= 0 || mainGrid.gridArray[x-1][y].minion.health <= 0){
+                mainGrid.gridArray[x-1][y].minion.health = mainGrid.gridArray[x-1][y].minion.health - mainGrid.gridArray[x][y].minion.attack;
+                mainGrid.gridArray[x][y].minion.health = mainGrid.gridArray[x][y].minion.health - mainGrid.gridArray[x-1][y].minion.attack;
+              }
+              if (mainGrid.gridArray[x-1][y].minion.health > mainGrid.gridArray[x][y].minion.health){
+                mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
+              }
+              else if (mainGrid.gridArray[x-1][y].minion.health == mainGrid.gridArray[x][y].minion.health){
+                mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
+                mainGrid.gridArray[x-1][y] = new Block(mainGrid.grassImage, 0, "grass");
+              }
+              else{
+                mainGrid.gridArray[x-1][y] = new Block(mainGrid.grassImage, 0, "grass");
+              }
+            }
           }
         }
       }
     }
-  }
 
   for (int i = 0; i < 4; i++) {
     out1[i].show(i);
@@ -117,6 +150,7 @@ void draw() {
   cardSelect();
   selectBlockLeft();
   selectBlockRight();
+  }
 }
 //scrolling up and down for either side
 void cardSelect() {
