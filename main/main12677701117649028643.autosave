@@ -13,13 +13,11 @@ int tileSize = 100;
 int p1health = 1000;
 int p2health = 1000;
 
-card oldOut;
-
 int x = (displayWidth-10*tileSize)/2;
 int y = 100+tileSize;
 
-boolean done1 = false;
-boolean done2 = false;
+boolean done = false;
+
 Queue<card> deck1 = new LinkedList<card>();
 card[] out1 = new card[4];
 
@@ -40,9 +38,9 @@ int rectHighlight = color(51);
 boolean firstFrames = true;
 boolean currentB = false;
 boolean bIsReleased = true;
-ElixirBar elixirBar;
+ElixirBar elixirBar; 
 ElixirBar elixirBar1;
-int last = millis();
+int last = millis(); 
 
 int rheight = 0;
 int lheight = 0;
@@ -68,16 +66,17 @@ void setup() {
   minionArray[0].yPos=2;
   minionArray[1].xPos = 5;
   minionArray[1].yPos = 2;
-
+  
 
   fullScreen();
   println(displayWidth);
   background(255);
 
   for (int i = 0; i<minionArray.length; i++) {
-    if (minionArray[i] != null && i == 0) {
+    if (minionArray[i] != null && i == 0){
       mainGrid.gridArray[minionArray[i].xPos][minionArray[i].yPos] = new Block(mainGrid.knightImage, 1, "knight");
-    } else if (minionArray[i] != null && i > 0) {
+    }
+    else if (minionArray[i] != null && i > 0){
       mainGrid.gridArray[minionArray[i].xPos][minionArray[i].yPos] = new Block(loadImage("goblin_combined.png"), 2, "goblin");
     }
   }
@@ -88,7 +87,7 @@ void setup() {
   out1[1] = new card("knight", 65);
   out1[2] = new card("hog", 65);
   out1[3] = new card("valkyrie", 65);
-
+  
   deck1.add(new card("wizard", 65));
   deck1.add(new card("fighter", 65));
   deck1.add(new card("robot", 65));
@@ -113,164 +112,155 @@ void keyPressed() {
   if (key == 'b') {
     currentB = true;
   }
-
+  
+  print(keyCode); //enter: 10, shift: 16
 }
 
 
 void draw() {
-  if (done1 == true || done2 == true) {
-    
+  if (done == true){
     background(255);
     textSize(128);
-    
-    if (done1){
-      text("player 1 wins", 40, 120);
-    }
-    else{
-      text("player 2 wins", 40, 120);
-    }
-    
+    text("player 1 wins", 40, 120); 
     fill(0, 408, 612);
-  } 
-  else if (done1 == false) {
+  }
+  else if (done == false){
     background(255);
+  }
 
+  //if ((millis() - last) > 5000) {
+  //  elixirBar.increase(); 
+  //  elixirBar1.increase(); 
+  //  last = millis(); 
+  //}
+  
+  //elixirBar.draw();
+  //elixirBar1.draw();
 
-    //if ((millis() - last) > 5000) {
-    //  elixirBar.increase();
-    //  elixirBar1.increase();
-    //  last = millis();
-    //}
+  if (currentB == false) {
+    bIsReleased = true;
+  }
 
-    //elixirBar.draw();
-    //elixirBar1.draw();
-
-    if (currentB == false) {
-      bIsReleased = true;
-    }
-
-    if (currentB && bIsReleased) {
-      println("new b press");
-      bIsReleased = false;
-      // for (int i = 0; i<minionArray.length; i++){
-      //   if (minionArray[i] != null){
-      //     println("id for:"+minionArray[i].type);
-      //     println(minionArray[i].id);
+  if (currentB && bIsReleased) {
+    bIsReleased = false;
+    for (int i = 0; i < minionArray.length; i++){
+      if (minionArray[i] != null && minionArray[i].xPos >= 0 && minionArray[i].xPos <= 9){
+         print("pos:");
+         print(minionArray[i].xPos);
+         print(minionArray[i].type);
+         print("posed");
+        if (minionArray[i].xPos == 8 && minionArray[i].type == "knight"){
+          done = true;
           
-      //   }
-      // }
-      for (int i = 0; i < minionArray.length; i++) {
-        if (minionArray[i] != null && minionArray[i].xPos >= 0 && minionArray[i].xPos <= 9) {
-          if (minionArray[i].xPos == 8 && minionArray[i].id == 1) {
-            done1 = true;
-          }
-          if (minionArray[i].xPos == 1 && minionArray[i].id == 2){
-            done2 = true;
-          }
-
-          if (minionArray[i].id == 1) {
-            println("triggered, type is "+minionArray[i].type);
-            minionArray[i].xPos = minionArray[i].xPos + 1;
-            mainGrid.gridArray[minionArray[i].xPos-1][minionArray[i].yPos] = new Block(mainGrid.grassImage, 0, "grass");
-            mainGrid.gridArray[minionArray[i].xPos][minionArray[i].yPos] = new Block(minionArray[i].minionImage, minionArray[i].id, minionArray[i].type);
-          } 
-          else if ( minionArray[i].id == 2) {
-            
-            minionArray[i].xPos = minionArray[i].xPos - 1;
-            println(minionArray[i].xPos);
-            mainGrid.gridArray[minionArray[i].xPos+1][minionArray[i].yPos] = new Block(mainGrid.grassImage, 0, "grass");
-            mainGrid.gridArray[minionArray[i].xPos][minionArray[i].yPos] = new Block(minionArray[i].minionImage, minionArray[i].id, minionArray[i].type);
-          }
-          else{
-            println("idk why but it didn't trigger, type is "+minionArray[i].type+", and id is:");
-            println(minionArray[i].id == 1 || minionArray[i].id == 2);
-          }
+        }
+        print("id: ");
+        print(minionArray[i].id);
+        print(minionArray[i].type);
+        print("end");
+        if (minionArray[i].type == "knight"){
+          minionArray[i].xPos = minionArray[i].xPos + 1;
+          mainGrid.gridArray[minionArray[i].xPos-1][minionArray[i].yPos] = new Block(mainGrid.grassImage, 1, "grass");
+          mainGrid.gridArray[minionArray[i].xPos][minionArray[i].yPos] = new Block(minionArray[i].minionImage, minionArray[i].id, minionArray[i].type);
+        }
+        else if ( minionArray[i].type == "goblin"){
+          minionArray[i].xPos = minionArray[i].xPos - 1;
+          mainGrid.gridArray[minionArray[i].xPos+1][minionArray[i].yPos] = new Block(mainGrid.grassImage, 2, "grass");
+          mainGrid.gridArray[minionArray[i].xPos][minionArray[i].yPos] = new Block(minionArray[i].minionImage, minionArray[i].id, minionArray[i].type);
         }
       }
     }
+    
+  
+  }
 
-    size(displayWidth, displayHeight);
-    strokeWeight(5);
+  size(displayWidth, displayHeight);
+  strokeWeight(5);
 
-    for (int y = 0; y < 5; y++) {
-      for (int x = 0; x < 10; x++) {
-        drawImage(mainGrid.gridArray[x][y].image, x, y);
+  for (int y = 0; y < 5; y++) {
+    for (int x = 0; x < 10; x++) {
+      drawImage(mainGrid.gridArray[x][y].image, x, y);
 
-        if (y == 2) {
-          if (x > 0 && x < 9) {
-
-            if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x+1][y].minion != null) {
-              while (mainGrid.gridArray[x][y].minion.health <= 0 || mainGrid.gridArray[x+1][y].minion.health <= 0) {
-                mainGrid.gridArray[x+1][y].minion.health = mainGrid.gridArray[x+1][y].minion.health - mainGrid.gridArray[x][y].minion.attack;
-                mainGrid.gridArray[x][y].minion.health = mainGrid.gridArray[x][y].minion.health - mainGrid.gridArray[x+1][y].minion.attack;
-              }
-              if (mainGrid.gridArray[x+1][y].minion.health > mainGrid.gridArray[x][y].minion.health) {
-                mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
-                for (int i = 0; i < minionArray.length; i++) {
-                  if (minionArray[i] != null) {
-                    if (minionArray[i].xPos == x) {
-                      minionArray[i] = null;
-                    }
+      if (y == 2) {
+        if (x > 0 && x < 9) {
+          
+          if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x+1][y].minion != null) {
+            println("1");
+            println(mainGrid.gridArray[x][y].minion.health);
+            println(mainGrid.gridArray[x+1][y].minion.health);
+            while (mainGrid.gridArray[x][y].minion.health <= 0 || mainGrid.gridArray[x+1][y].minion.health <= 0) {
+              print("fighting");
+              mainGrid.gridArray[x+1][y].minion.health = mainGrid.gridArray[x+1][y].minion.health - mainGrid.gridArray[x][y].minion.attack;
+              mainGrid.gridArray[x][y].minion.health = mainGrid.gridArray[x][y].minion.health - mainGrid.gridArray[x+1][y].minion.attack;
+            }
+            if (mainGrid.gridArray[x+1][y].minion.health > mainGrid.gridArray[x][y].minion.health) {
+              mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
+              for (int i = 0; i < minionArray.length; i++){
+                if (minionArray[i] != null){
+                  if (minionArray[i].xPos == x){
+                    minionArray[i] = null;
                   }
                 }
-              } else if (mainGrid.gridArray[x+1][y].minion.health == mainGrid.gridArray[x][y].minion.health) {
+              }
+            } else if (mainGrid.gridArray[x+1][y].minion.health == mainGrid.gridArray[x][y].minion.health) {
+              mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
+              mainGrid.gridArray[x+1][y] = new Block(mainGrid.grassImage, 0, "grass");
+            } else {
+              mainGrid.gridArray[x+1][y] = new Block(mainGrid.grassImage, 0, "grass");
+              for (int i = 0; i < minionArray.length; i++){
+                if (minionArray[i] != null){
+                  if (minionArray[i].xPos == x+1){
+                    minionArray[i] = null;
+                  }
+                }
+              }
+            }
+          } 
+          else if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x-1][y].minion != null) {
+            
+            print("-1");
+            if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x-1][y].minion != null) {
+              while (mainGrid.gridArray[x][y].minion.health <= 0 || mainGrid.gridArray[x-1][y].minion.health <= 0) {
+                mainGrid.gridArray[x-1][y].minion.health = mainGrid.gridArray[x-1][y].minion.health - mainGrid.gridArray[x][y].minion.attack;
+                mainGrid.gridArray[x][y].minion.health = mainGrid.gridArray[x][y].minion.health - mainGrid.gridArray[x-1][y].minion.attack;
+              }
+              if (mainGrid.gridArray[x-1][y].minion.health > mainGrid.gridArray[x][y].minion.health) {
                 mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
-                mainGrid.gridArray[x+1][y] = new Block(mainGrid.grassImage, 0, "grass");
+                for (int i = 0; i < minionArray.length; i++){
+                if (minionArray[i] != null){
+                  if (minionArray[i].xPos == x){
+                    minionArray[i] = null;
+                  }
+                }
+              }
+              } else if (mainGrid.gridArray[x-1][y].minion.health == mainGrid.gridArray[x][y].minion.health) {
+                mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
+                mainGrid.gridArray[x-1][y] = new Block(mainGrid.grassImage, 0, "grass");
               } else {
-                mainGrid.gridArray[x+1][y] = new Block(mainGrid.grassImage, 0, "grass");
-                for (int i = 0; i < minionArray.length; i++) {
-                  if (minionArray[i] != null) {
-                    if (minionArray[i].xPos == x+1) {
-                      minionArray[i] = null;
-                    }
+                mainGrid.gridArray[x-1][y] = new Block(mainGrid.grassImage, 0, "grass");
+                for (int i = 0; i < minionArray.length; i++){
+                if (minionArray[i] != null){
+                  if (minionArray[i].xPos == x-1){
+                    minionArray[i] = null;
                   }
                 }
               }
-            } else if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x-1][y].minion != null) {
-
-              if (mainGrid.gridArray[x][y].minion != null && mainGrid.gridArray[x-1][y].minion != null) {
-                while (mainGrid.gridArray[x][y].minion.health <= 0 || mainGrid.gridArray[x-1][y].minion.health <= 0) {
-                  mainGrid.gridArray[x-1][y].minion.health = mainGrid.gridArray[x-1][y].minion.health - mainGrid.gridArray[x][y].minion.attack;
-                  mainGrid.gridArray[x][y].minion.health = mainGrid.gridArray[x][y].minion.health - mainGrid.gridArray[x-1][y].minion.attack;
-                }
-                if (mainGrid.gridArray[x-1][y].minion.health > mainGrid.gridArray[x][y].minion.health) {
-                  mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
-                  for (int i = 0; i < minionArray.length; i++) {
-                    if (minionArray[i] != null) {
-                      if (minionArray[i].xPos == x) {
-                        minionArray[i] = null;
-                      }
-                    }
-                  }
-                } else if (mainGrid.gridArray[x-1][y].minion.health == mainGrid.gridArray[x][y].minion.health) {
-                  mainGrid.gridArray[x][y] = new Block(mainGrid.grassImage, 0, "grass");
-                  mainGrid.gridArray[x-1][y] = new Block(mainGrid.grassImage, 0, "grass");
-                } else {
-                  mainGrid.gridArray[x-1][y] = new Block(mainGrid.grassImage, 0, "grass");
-                  for (int i = 0; i < minionArray.length; i++) {
-                    if (minionArray[i] != null) {
-                      if (minionArray[i].xPos == x-1) {
-                        minionArray[i] = null;
-                      }
-                    }
-                  }
-                }
               }
             }
           }
         }
       }
-      //out1[0].show(0);
-      for (int i = 0; i < 4; i++) {
-        out1[i].show(i);
-        out2[i].show(i);
-      }
-      cardSelect();
-      // selectBlockLeft();
-      // selectBlockRight();
     }
+    //out1[0].show(0);
+    for (int i = 0; i < 4; i++) {
+      out1[i].show(i);
+      out2[i].show(i);
+    }
+    cardSelect();
+    // selectBlockLeft();
+    // selectBlockRight();
   }
-}
+  }
+
 //scrolling up and down for either side
 void cardSelect() {
   if (!keyPressed) {
@@ -325,20 +315,19 @@ void cardSelect() {
         for (int i = 0; i < 4; i++) {
           if (out1[i].selected == true) {
             out1[i].used(); // make this place the card down
-            oldOut = out1[i];
+            println(out1[i].type); //delete this if u want
             deck1.add(out1[i]);
             out1[i] = deck1.remove();
             out1[i].selected = true;
             lcardSelect = true;
-            mainGrid.gridArray[0][2] = new Block(grass, 1, oldOut.type);
+            mainGrid.gridArray[0][2] = new Block(grass, 2, "knight");
             int k = 0;
-            while (minionArray[k] != null) {
+            while (minionArray[k] != null){
               k = k+1;
             }
-
-            mainGrid.gridArray[0][2].minion.xPos = 0;
-            mainGrid.gridArray[0][2].minion.yPos = 2;
             minionArray[k] = mainGrid.gridArray[0][2].minion;
+            minionArray[k].xPos = 0;
+            minionArray[k].yPos = 2;
           }
         }
       }
@@ -390,24 +379,25 @@ void cardSelect() {
           for (int i = 0; i < 4; i++) {
             if (out2[i].selected == true) {
               out2[i].used(); // make this place the card down
-              oldOut = out2[i];
+              println(out2[i].type); //delete this if u want
               deck2.add(out2[i]);
               out2[i] = deck2.remove();
               out2[i].selected = true;
               rcardSelect = true;
-              mainGrid.gridArray[9][2] = new Block(grass, 2, oldOut.type);
+              mainGrid.gridArray[9][2] = new Block(grass, 1, "goblin");
               int k = 0;
-              while (minionArray[k] != null) {
+              while (minionArray[k] != null){
                 k = k+1;
               }
-              mainGrid.gridArray[9][2].minion.xPos = 9;
-              mainGrid.gridArray[9][2].minion.yPos = 2;
               minionArray[k] = mainGrid.gridArray[9][2].minion;
+              minionArray[k].xPos = 9;
+              minionArray[k].yPos = 2;
             }
           }
         }
       }
     }
+
   }
 }
 
@@ -468,6 +458,7 @@ void selectBlockRight() {
           if (rheight < 4 && rheight >= 0) {
             rheight++;
           }
+          println("hello");
         }
       }
       if (keyCode == UP && upReleased) {
